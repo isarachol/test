@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="wheel_radius" value="0.035" />
+    <xacro:property name="wheel_length" value="0.02" />
+    <xacro:property name="chassis_width" value="0.2" />
+    <xacro:property name="chassis_length" value="0.3" />
+    <xacro:property name="chassis_height" value="0.1" />
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+        
+    <link name="base_link">
+        
+    </link>
+        
+    <link name="chassis">
+        <visual>
+            <geometry>
+            <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="2"/>
+            <inertia ixx="1.75e-2" iyy="4.17e-3" izz="1.08e-2" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="chassis">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <joint name="chassis_joint" type="fixed">
+        <origin xyz="0 0 ${wheel_radius+chassis_height/2}" />
+        <parent link="base_link"/>
+        <child link="chassis"/>
+    </joint>
+
+    <link name="left_front_wheel">
+        <visual>
+            <geometry>
+            <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="2.53e-4" iyy="2.53e-4" izz="5e-4" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="left_front_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <joint name="left_front_wheel_joint" type="continuous"> 
+        <axis xyz="0 0 1"/>
+        <parent link="chassis"/>
+        <child link="left_front_wheel"/>
+        <origin rpy="${-pi/2} 0 0" xyz="0.1 ${(chassis_width+wheel_length)/2} ${-wheel_radius}"/> <!-- ${(chassis_width+wheel_length)/2} -->
+    </joint>
+
+    <link name="right_front_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="2.53e-4" iyy="2.53e-4" izz="5e-4" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="right_front_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <joint name="right_front_wheel_joint" type="continuous">
+        <axis rpy="0 0 0" xyz="0 0 1"/>
+        <parent link="chassis"/>
+        <child link="right_front_wheel"/>
+        <origin rpy="${-pi/2} 0 0" xyz="0.1 -${(chassis_width+wheel_length)/2} ${-wheel_radius}"/> <!-- ${-(chassis_width+wheel_length)/2} -->
+    </joint>
+
+    <link name="left_back_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="2.53e-4" iyy="2.53e-4" izz="5e-4" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="left_back_wheel">
+        <material>Gazebo/Black</material>
+        <mu1 value="0.0001"/>
+        <mu2 value="0.0001"/>
+    </gazebo>
+
+    <joint name="left_back_wheel_joint" type="fixed">
+        <!-- <axis rpy="0 0 0" xyz="0 0 1"/> -->
+        <parent link="chassis"/>
+        <child link="left_back_wheel"/>
+        <origin rpy="${-pi/2} 0 0" xyz="-0.1 ${(chassis_width+wheel_length)/2} ${-wheel_radius}"/> <!-- ${(chassis_width+wheel_length)/2} -->
+    </joint>
+
+    <link name="right_back_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="2.53e-4" iyy="2.53e-4" izz="5e-4" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="right_back_wheel">
+        <material>Gazebo/Black</material>
+        <mu1 value="0.0001"/>
+        <mu2 value="0.0001"/>
+    </gazebo>
+
+    <joint name="right_back_wheel_joint" type="fixed">
+        <!-- <axis rpy="0 0 0" xyz="0 0 1"/> -->
+        <parent link="chassis"/>
+        <child link="right_back_wheel"/>
+        <origin rpy="${-pi/2} 0 0" xyz="-0.1 ${-(chassis_width+wheel_length)/2} ${-wheel_radius}"/> <!-- ${-(chassis_width+wheel_length)/2} -->
+    </joint>
+
+</robot>
